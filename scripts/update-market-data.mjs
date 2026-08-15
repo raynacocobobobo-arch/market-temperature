@@ -1,20 +1,8 @@
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 
 const endpoint = 'https://proxy.finance.qq.com/cgi/cgi-bin/rank/hs/getBoardRankList';
 const sourceUrl = 'https://stockapp.finance.qq.com/';
 const pageSize = 200;
-
-function isTradingWindow() {
-  if (process.env.FORCE_UPDATE === 'true') return true;
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Asia/Shanghai', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false
-  }).formatToParts(new Date());
-  const value = Object.fromEntries(parts.map(part => [part.type, part.value]));
-  if (['Sat', 'Sun'].includes(value.weekday)) return false;
-  const minute = Number(value.hour) * 60 + Number(value.minute);
-  return (minute >= 9 * 60 + 15 && minute <= 11 * 60 + 35) ||
-    (minute >= 12 * 60 + 55 && minute <= 15 * 60 + 10);
-}
 
 async function fetchPage(offset) {
   const url = new URL(endpoint);
@@ -73,11 +61,6 @@ async function fetchMarketTime() {
   }
 }
 
-if (!isTradingWindow()) {
-  console.log('当前不在A股交易时间，跳过定时更新。');
-  process.exit(0);
-}
-
 const rows = await fetchAllStocks();
 const definitions = [
   { key: 'shanghai', name: '上证', short: '上证', code: 'SSE', desc: '沪市主板（不含科创板）', filter: row => row.stock_type === 'GP-A' && row.code.startsWith('sh') },
@@ -94,5 +77,17 @@ const data = {
   markets: definitions.map(definition => summarize(rows, definition))
 };
 
-await writeFile(new URL('../market-data.json', import.meta.url), `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+const outputPath = new URL('../market-data.json', import.meta.url);
+if (process.env.FORCE_UPDATE !== 'true') {
+  try {
+    const previous = JSON.parse(await readFile(outputPath, 'utf8'));
+    if (data.market_time && previous.market_time === data.market_time) {
+      console.log(`行情日期未变化（${data.market_time}），今天不是交易日或收盘数据已保存，跳过写入。`);
+      process.exit(0);
+    }
+  } catch {
+    // 首次运行或旧文件不可读时正常生成。
+  }
+}
+await writeFile(outputPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 console.log(JSON.stringify(data, null, 2));
