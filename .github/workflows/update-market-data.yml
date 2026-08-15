@@ -1,0 +1,42 @@
+name: Update Tencent market breadth
+
+on:
+  schedule:
+    - cron: "*/5 1-7 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-market-data
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Fetch Tencent market breadth
+        env:
+          FORCE_UPDATE: ${{ github.event_name == 'workflow_dispatch' }}
+        run: node scripts/update-market-data.mjs
+
+      - name: Commit updated data
+        run: |
+          if git diff --quiet -- market-data.json; then
+            echo "Market data unchanged; nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add market-data.json
+          git commit -m "Update Tencent market breadth"
+          git push
