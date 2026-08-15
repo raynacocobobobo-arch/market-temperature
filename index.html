@@ -74,7 +74,7 @@
 
     <section>
       <div class="section-head">
-        <div class="section-title"><span class="index">01</span><div><h2>三大市场温度计</h2><p>腾讯行情统计，每 5 分钟更新</p></div></div>
+        <div class="section-title"><span class="index">01</span><div><h2>三大市场温度计</h2><p>腾讯行情统计，每个交易日收盘后更新</p></div></div>
         <div class="actions"><button class="example" id="refresh">立即刷新</button></div>
       </div>
       <div class="grid" id="cards"></div>
@@ -141,7 +141,7 @@
       }
     }
     document.getElementById('refresh').addEventListener('click',loadData);
-    render();loadData();setInterval(loadData,60000);
+    render();loadData();setInterval(loadData,1800000);
   </script>
 </body>
 </html>
