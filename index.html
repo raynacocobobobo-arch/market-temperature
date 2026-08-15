@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="通过上涨家数与下跌家数观察上证、科创板和创业板的市场温度。">
+  <title>市场温度</title>
+  <style>
+    :root {
+      --ink:#111319; --muted:#70737d; --line:#dedfd8; --paper:#f3f2ec;
+      --card:#fbfaf6; --acid:#d8ff38; --cold:#4169e1; --cool:#56a7d8;
+      --balanced:#999b94; --warm:#e7a72d; --hot:#ef6c33; --overheated:#ee334e;
+      --tone:var(--warm);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+    button,input{font:inherit}button{cursor:pointer}
+    .topbar{height:68px;padding:0 max(22px,calc((100vw - 1240px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(243,242,236,.94);backdrop-filter:blur(10px);position:sticky;top:0;z-index:20}
+    .brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-size:17px;font-weight:850}
+    .brand-mark{width:24px;height:24px;border-radius:50%;background:var(--ink);display:flex;align-items:flex-end;justify-content:center;gap:2px;padding-bottom:6px}
+    .brand-mark i{display:block;width:2px;border-radius:2px;background:var(--acid)}
+    .brand-mark i:nth-child(1){height:6px}.brand-mark i:nth-child(2){height:11px}.brand-mark i:nth-child(3){height:15px}
+    .mode{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em}
+    .mode:before{content:"";width:7px;height:7px;border-radius:50%;background:#61c46b;box-shadow:0 0 0 4px rgba(97,196,107,.12)}
+    .shell{max-width:1240px;margin:auto;padding:0 22px 80px}
+    .hero{min-height:575px;padding:72px 0 64px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(350px,.75fr);gap:70px;align-items:center}
+    .eyebrow,.code{color:#74776f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;font-weight:800;letter-spacing:.18em}
+    h1{margin:18px 0 22px;font-size:clamp(55px,7.2vw,92px);line-height:.98;letter-spacing:-.075em;font-weight:900}
+    .lead{max-width:600px;color:#62655f;font-size:17px;line-height:1.8}
+    .formula{width:max-content;max-width:100%;margin-top:34px;padding:13px 18px;display:flex;align-items:center;gap:15px;border:1px solid #d4d5ce;border-radius:12px;background:rgba(255,255,255,.4);font-size:13px;font-weight:800}
+    .formula>b{color:#90928b;font-size:18px}.fraction{min-width:160px;display:grid;text-align:center;font-size:11px}.fraction i{height:1px;background:var(--ink);margin:4px 0}
+    .overview{min-height:400px;padding:28px 30px;border-radius:26px;background:var(--ink);color:#fff;box-shadow:0 28px 70px rgba(20,21,18,.16);position:relative;overflow:hidden}
+    .overview:after{content:"";width:210px;height:210px;border-radius:50%;position:absolute;right:-90px;top:-70px;background:var(--tone);opacity:.92}
+    .overview-head,.overview-level,.ranking{position:relative;z-index:2}.overview-head{display:flex;justify-content:space-between;font-size:13px;font-weight:800}.overview-head i{padding:5px 8px;border:1px solid rgba(255,255,255,.2);border-radius:20px;color:rgba(255,255,255,.6);font-size:10px;font-style:normal;font-weight:500}
+    .overview-value{margin-top:30px;position:relative;z-index:2;font:600 clamp(72px,8vw,102px)/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:-.09em}
+    .overview-level{display:flex;align-items:baseline;gap:12px;margin:7px 0 42px}.overview-level strong{color:var(--tone);font-size:20px}.overview-level span{color:rgba(255,255,255,.5);font-size:11px}
+    .ranking{display:grid;gap:13px}.rank{display:grid;grid-template-columns:24px 44px 1fr 48px;align-items:center;gap:10px;font-size:11px}.rank>span:first-child{color:rgba(255,255,255,.35);font-family:monospace}.rank b{font-size:12px}.rank strong{text-align:right;font-family:monospace}.rank-line{height:3px;background:rgba(255,255,255,.13);border-radius:3px;overflow:hidden}.rank-line i{display:block;height:100%;background:var(--tone);border-radius:inherit}
+    section{border-top:1px solid var(--line);padding:42px 0 64px}.section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px}.section-title{display:flex;gap:15px;align-items:flex-start}.index{margin-top:5px;color:#96988f;font:11px monospace}.section-title h2{margin:0 0 5px;font-size:25px;letter-spacing:-.035em}.section-title p{margin:0;color:var(--muted);font-size:13px}.actions{display:flex;gap:8px}.actions button{min-height:38px;padding:0 15px;border-radius:9px;font-size:12px;font-weight:800}.reset{border:1px solid #d6d7d0;background:transparent;color:#5c5f58}.example{border:1px solid var(--ink);background:var(--ink);color:#fff}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{min-width:0;padding:23px;border:1px solid #dbdcd5;border-radius:18px;background:var(--card);transition:transform .18s,border-color .18s}.card:hover{transform:translateY(-2px);border-color:#c2c4ba}.card-head{min-height:76px;display:flex;justify-content:space-between;gap:12px}.card h3{margin:6px 0 4px;font-size:21px;letter-spacing:-.035em}.card-head p{margin:0;color:var(--muted);font-size:11px}.pill{height:max-content;padding:5px 9px;border-radius:20px;background:color-mix(in srgb,var(--tone) 13%,white);color:var(--tone);font-size:11px;font-weight:850}
+    .reading{text-align:center;margin:22px 0 20px}.reading small{display:block;color:var(--muted);font-size:11px}.reading strong{display:block;margin:4px 0;color:var(--tone);font:650 45px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:-.07em}.reading em{color:#85877f;font:normal 10px ui-monospace,monospace}
+    .temperature-scale{height:10px;margin:0 2px 22px;border-radius:10px;background:linear-gradient(90deg,var(--cold),var(--cool) 25%,var(--balanced) 38%,var(--warm) 55%,var(--hot) 75%,var(--overheated));position:relative}.needle{width:3px;height:18px;border-radius:3px;background:var(--ink);position:absolute;top:-4px;left:50%;transform:translateX(-50%);transition:left .4s}.temperature-scale:before,.temperature-scale:after{position:absolute;top:15px;color:#999b94;font:9px monospace}.temperature-scale:before{content:"-1";left:0}.temperature-scale:after{content:"2+";right:0}
+    .breadth{margin:27px 0 17px}.breadth-label{display:flex;justify-content:space-between;margin-bottom:7px;color:var(--muted);font-size:10px}.breadth-label b{color:var(--ink);font-family:monospace}.breadth-track{height:5px;border-radius:5px;background:#e4e4dc;overflow:hidden}.breadth-track i{display:block;height:100%;border-radius:inherit;background:var(--tone);transition:width .35s}
+    .inputs{display:grid;grid-template-columns:1fr 1fr;gap:9px}.inputs label{display:grid;gap:7px;color:var(--muted);font-size:10px}.label{display:flex;align-items:center;gap:6px}.dot{width:6px;height:6px;border-radius:50%}.up{background:#ea5362}.down{background:#4b9d6a}.inputs input{width:100%;min-width:0;height:40px;padding:0 10px;border:1px solid #d9dad3;border-radius:8px;outline:none;background:#f3f2ec;color:var(--ink);font:700 13px ui-monospace,monospace}.inputs input:focus{border-color:var(--tone);box-shadow:0 0 0 3px color-mix(in srgb,var(--tone) 14%,transparent)}
+    .guide{display:grid;grid-template-columns:repeat(6,1fr);min-height:92px;border-radius:14px;overflow:hidden}.guide div{padding:18px 14px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}.guide b{font-size:14px}.guide span{font:9px monospace;opacity:.8}.g1{background:var(--cold)}.g2{background:var(--cool)}.g3{background:var(--balanced)}.g4{background:var(--warm)}.g5{background:var(--hot)}.g6{background:var(--overheated)}
+    .note{margin-top:17px;padding:17px 19px;display:flex;gap:13px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:12px;line-height:1.65}.note b{height:max-content;padding:3px 7px;border-radius:5px;background:#e2e1da;color:var(--ink);font-size:10px}.note p{margin:0}
+    footer{min-height:126px;padding:34px max(22px,calc((100vw - 1240px)/2));display:flex;align-items:center;justify-content:space-between;background:var(--ink);color:#fff}footer b{font:11px monospace;letter-spacing:.18em}footer span{color:rgba(255,255,255,.45);font-size:12px}
+    .cold{--tone:var(--cold)}.cool{--tone:var(--cool)}.balanced{--tone:var(--balanced)}.warm{--tone:var(--warm)}.hot{--tone:var(--hot)}.overheated{--tone:var(--overheated)}.neutral{--tone:#85877f}
+    @media(max-width:920px){.hero{grid-template-columns:1fr;gap:40px}.overview{max-width:620px}.grid{grid-template-columns:1fr}.guide{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:620px){.topbar{height:60px;padding:0 16px}.shell{padding:0 15px 55px}.hero{min-height:0;padding:46px 0 50px}h1{font-size:clamp(49px,16vw,70px)}.lead{font-size:15px}.formula{width:100%;justify-content:center;padding:12px}.overview{min-height:380px;padding:23px}.overview-value{font-size:76px}.section-head{align-items:flex-start;gap:18px;flex-direction:column}.actions{width:100%}.actions button{flex:1}.card{padding:21px 18px}.guide{grid-template-columns:repeat(2,1fr)}.guide div{min-height:80px}footer{padding:29px 18px;align-items:flex-start;flex-direction:column;gap:12px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top"><span class="brand-mark"><i></i><i></i><i></i></span><span>市场温度</span></a>
+    <span class="mode">手动数据模式</span>
+  </header>
+  <main class="shell" id="top">
+    <div class="hero">
+      <div>
+        <div class="eyebrow">MARKET BREADTH · A-SHARE</div>
+        <h1>今天，市场到底<br>有多热？</h1>
+        <p class="lead">不看指数涨了多少，只看上涨和下跌的真实家数。输入盘面数据，立即比较三个市场的赚钱效应。</p>
+        <div class="formula"><span>市场温度</span><b>=</b><span class="fraction"><span>上涨家数 − 下跌家数</span><i></i><span>下跌家数</span></span></div>
+      </div>
+      <aside class="overview" id="overview">
+        <div class="overview-head"><span>三市场综合</span><i>等权平均</i></div>
+        <div class="overview-value" id="composite">—</div>
+        <div class="overview-level"><strong id="compositeLevel">待输入</strong><span id="compositeNote">等待有效数据</span></div>
+        <div class="ranking" id="ranking"></div>
+      </aside>
+    </div>
+
+    <section>
+      <div class="section-head">
+        <div class="section-title"><span class="index">01</span><div><h2>三大市场温度计</h2><p>修改家数后自动重新计算</p></div></div>
+        <div class="actions"><button class="reset" id="reset">恢复默认</button><button class="example" id="example">载入对比示例</button></div>
+      </div>
+      <div class="grid" id="cards"></div>
+    </section>
+
+    <section>
+      <div class="section-title" style="margin-bottom:28px"><span class="index">02</span><div><h2>读数怎么理解</h2><p>0 是涨跌家数相等；+1 代表上涨家数是下跌家数的 2 倍</p></div></div>
+      <div class="guide">
+        <div class="g1"><b>冰点</b><span>≤ -0.50</span></div><div class="g2"><b>偏冷</b><span>-0.50 ～ -0.10</span></div>
+        <div class="g3"><b>均衡</b><span>-0.10 ～ +0.10</span></div><div class="g4"><b>回暖</b><span>+0.10 ～ +0.50</span></div>
+        <div class="g5"><b>偏热</b><span>+0.50 ～ +1.00</span></div><div class="g6"><b>过热</b><span>≥ +1.00</span></div>
+      </div>
+      <div class="note"><b>说明</b><p>本工具衡量的是市场涨跌广度，不代表指数涨跌幅，也不构成交易建议。下跌家数为 0 时不计算。</p></div>
+    </section>
+  </main>
+  <footer><b>MARKET TEMPERATURE</b><span>用涨跌家数看懂真实市场情绪</span></footer>
+
+  <script>
+    const defaults=[
+      {key:'shanghai',name:'上证市场',short:'上证',code:'SSE',desc:'沪市主板整体涨跌广度',up:1189,down:915},
+      {key:'star',name:'科创板',short:'科创',code:'STAR',desc:'科创板个股涨跌广度',up:356,down:214},
+      {key:'chinext',name:'创业板',short:'创业',code:'CHINEXT',desc:'创业板个股涨跌广度',up:742,down:611}
+    ];
+    const examples={shanghai:{up:1456,down:648},star:{up:291,down:279},chinext:{up:519,down:834}};
+    let markets=structuredClone(defaults);
+    const cards=document.getElementById('cards');
+    const temp=(up,down)=>down>0?(up-down)/down:null;
+    const clamp=(n,min,max)=>Math.min(Math.max(n,min),max);
+    const format=v=>v===null||!Number.isFinite(v)?'—':`${v>0?'+':''}${v.toFixed(2)}`;
+    function state(v){if(v===null)return{label:'待输入',tone:'neutral'};if(v<=-.5)return{label:'冰点',tone:'cold'};if(v<-.1)return{label:'偏冷',tone:'cool'};if(v<=.1)return{label:'均衡',tone:'balanced'};if(v<.5)return{label:'回暖',tone:'warm'};if(v<1)return{label:'偏热',tone:'hot'};return{label:'过热',tone:'overheated'}}
+    function renderCards(){
+      cards.innerHTML=markets.map(m=>{
+        const v=temp(m.up,m.down),s=state(v),total=m.up+m.down,breadth=total>0?m.up/total*100:0,ratio=m.down>0?m.up/m.down:null,marker=clamp(((v??-1)+1)/3*100,0,100);
+        return `<article class="card ${s.tone}" data-key="${m.key}"><div class="card-head"><div><div class="code">${m.code}</div><h3>${m.name}</h3><p>${m.desc}</p></div><span class="pill">${s.label}</span></div><div class="reading"><small>市场温度</small><strong>${format(v)}</strong><em>${ratio===null?'下跌家数不能为 0':`上涨 / 下跌 = ${ratio.toFixed(2)}`}</em></div><div class="temperature-scale"><i class="needle" style="left:${marker}%"></i></div><div class="breadth"><div class="breadth-label"><span>上涨占比</span><b>${breadth.toFixed(1)}%</b></div><div class="breadth-track"><i style="width:${breadth}%"></i></div></div><div class="inputs"><label><span class="label"><i class="dot up"></i>上涨家数</span><input aria-label="${m.name}上涨家数" type="number" min="0" data-field="up" value="${m.up}"></label><label><span class="label"><i class="dot down"></i>下跌家数</span><input aria-label="${m.name}下跌家数" type="number" min="0" data-field="down" value="${m.down}"></label></div></article>`
+      }).join('');
+      cards.querySelectorAll('input').forEach(input=>input.addEventListener('input',e=>{const card=e.target.closest('.card'),m=markets.find(x=>x.key===card.dataset.key);m[e.target.dataset.field]=Math.max(0,Number(e.target.value)||0);render()}));
+    }
+    function renderOverview(){
+      const readings=markets.map(m=>({m,v:temp(m.up,m.down)})),valid=readings.map(x=>x.v).filter(v=>v!==null),composite=valid.length?valid.reduce((a,b)=>a+b,0)/valid.length:null,s=state(composite),overview=document.getElementById('overview');
+      overview.className=`overview ${s.tone}`;document.getElementById('composite').textContent=format(composite);document.getElementById('compositeLevel').textContent=s.label;document.getElementById('compositeNote').textContent=composite===null?'等待有效数据':composite>0?'上涨广度占优':'下跌广度占优';
+      readings.sort((a,b)=>(b.v??-Infinity)-(a.v??-Infinity));document.getElementById('ranking').innerHTML=readings.map((x,i)=>`<div class="rank"><span>0${i+1}</span><b>${x.m.short}</b><span class="rank-line"><i style="width:${clamp(((x.v??-1)+1)/3*100,5,100)}%"></i></span><strong>${format(x.v)}</strong></div>`).join('');
+    }
+    function render(){renderCards();renderOverview()}
+    document.getElementById('reset').addEventListener('click',()=>{markets=structuredClone(defaults);render()});
+    document.getElementById('example').addEventListener('click',()=>{markets=markets.map(m=>({...m,...examples[m.key]}));render()});
+    render();
+  </script>
+</body>
+</html>
