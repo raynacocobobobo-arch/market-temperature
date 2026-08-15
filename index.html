@@ -16,14 +16,14 @@
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
-    button,input{font:inherit}button{cursor:pointer}
+    button{font:inherit;cursor:pointer}
     .topbar{height:68px;padding:0 max(22px,calc((100vw - 1240px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(243,242,236,.94);backdrop-filter:blur(10px);position:sticky;top:0;z-index:20}
     .brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-size:17px;font-weight:850}
     .brand-mark{width:24px;height:24px;border-radius:50%;background:var(--ink);display:flex;align-items:flex-end;justify-content:center;gap:2px;padding-bottom:6px}
     .brand-mark i{display:block;width:2px;border-radius:2px;background:var(--acid)}
     .brand-mark i:nth-child(1){height:6px}.brand-mark i:nth-child(2){height:11px}.brand-mark i:nth-child(3){height:15px}
     .mode{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em}
-    .mode:before{content:"";width:7px;height:7px;border-radius:50%;background:#61c46b;box-shadow:0 0 0 4px rgba(97,196,107,.12)}
+    .mode:before{content:"";width:7px;height:7px;border-radius:50%;background:#61c46b;box-shadow:0 0 0 4px rgba(97,196,107,.12)}.mode.loading:before{background:#e7a72d;box-shadow:0 0 0 4px rgba(231,167,45,.12)}.mode.error:before{background:#ee5362;box-shadow:0 0 0 4px rgba(238,83,98,.12)}
     .shell{max-width:1240px;margin:auto;padding:0 22px 80px}
     .hero{min-height:575px;padding:72px 0 64px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(350px,.75fr);gap:70px;align-items:center}
     .eyebrow,.code{color:#74776f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;font-weight:800;letter-spacing:.18em}
@@ -42,7 +42,7 @@
     .reading{text-align:center;margin:22px 0 20px}.reading small{display:block;color:var(--muted);font-size:11px}.reading strong{display:block;margin:4px 0;color:var(--tone);font:650 45px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:-.07em}.reading em{color:#85877f;font:normal 10px ui-monospace,monospace}
     .temperature-scale{height:10px;margin:0 2px 22px;border-radius:10px;background:linear-gradient(90deg,var(--cold),var(--cool) 25%,var(--balanced) 38%,var(--warm) 55%,var(--hot) 75%,var(--overheated));position:relative}.needle{width:3px;height:18px;border-radius:3px;background:var(--ink);position:absolute;top:-4px;left:50%;transform:translateX(-50%);transition:left .4s}.temperature-scale:before,.temperature-scale:after{position:absolute;top:15px;color:#999b94;font:9px monospace}.temperature-scale:before{content:"-1";left:0}.temperature-scale:after{content:"2+";right:0}
     .breadth{margin:27px 0 17px}.breadth-label{display:flex;justify-content:space-between;margin-bottom:7px;color:var(--muted);font-size:10px}.breadth-label b{color:var(--ink);font-family:monospace}.breadth-track{height:5px;border-radius:5px;background:#e4e4dc;overflow:hidden}.breadth-track i{display:block;height:100%;border-radius:inherit;background:var(--tone);transition:width .35s}
-    .inputs{display:grid;grid-template-columns:1fr 1fr;gap:9px}.inputs label{display:grid;gap:7px;color:var(--muted);font-size:10px}.label{display:flex;align-items:center;gap:6px}.dot{width:6px;height:6px;border-radius:50%}.up{background:#ea5362}.down{background:#4b9d6a}.inputs input{width:100%;min-width:0;height:40px;padding:0 10px;border:1px solid #d9dad3;border-radius:8px;outline:none;background:#f3f2ec;color:var(--ink);font:700 13px ui-monospace,monospace}.inputs input:focus{border-color:var(--tone);box-shadow:0 0 0 3px color-mix(in srgb,var(--tone) 14%,transparent)}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.stat{padding:10px 8px;border:1px solid #dedfd8;border-radius:9px;background:#f3f2ec;text-align:center}.stat span{display:flex;align-items:center;justify-content:center;gap:5px;color:var(--muted);font-size:9px}.stat b{display:block;margin-top:5px;font:750 15px ui-monospace,monospace}.dot{width:6px;height:6px;border-radius:50%}.up{background:#ea5362}.down{background:#4b9d6a}.flat{background:#999b94}.data-meta{margin-top:17px;color:var(--muted);font-size:11px}.data-meta a{color:inherit;text-decoration:none;border-bottom:1px solid #c8c9c2}.data-meta a:hover{color:var(--ink)}
     .guide{display:grid;grid-template-columns:repeat(6,1fr);min-height:92px;border-radius:14px;overflow:hidden}.guide div{padding:18px 14px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}.guide b{font-size:14px}.guide span{font:9px monospace;opacity:.8}.g1{background:var(--cold)}.g2{background:var(--cool)}.g3{background:var(--balanced)}.g4{background:var(--warm)}.g5{background:var(--hot)}.g6{background:var(--overheated)}
     .note{margin-top:17px;padding:17px 19px;display:flex;gap:13px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:12px;line-height:1.65}.note b{height:max-content;padding:3px 7px;border-radius:5px;background:#e2e1da;color:var(--ink);font-size:10px}.note p{margin:0}
     footer{min-height:126px;padding:34px max(22px,calc((100vw - 1240px)/2));display:flex;align-items:center;justify-content:space-between;background:var(--ink);color:#fff}footer b{font:11px monospace;letter-spacing:.18em}footer span{color:rgba(255,255,255,.45);font-size:12px}
@@ -54,30 +54,31 @@
 <body>
   <header class="topbar">
     <a class="brand" href="#top"><span class="brand-mark"><i></i><i></i><i></i></span><span>市场温度</span></a>
-    <span class="mode">手动数据模式</span>
+    <span class="mode loading" id="mode">正在读取腾讯行情</span>
   </header>
   <main class="shell" id="top">
     <div class="hero">
       <div>
         <div class="eyebrow">MARKET BREADTH · A-SHARE</div>
         <h1>今天，市场到底<br>有多热？</h1>
-        <p class="lead">不看指数涨了多少，只看上涨和下跌的真实家数。输入盘面数据，立即比较三个市场的赚钱效应。</p>
+        <p class="lead">不看指数涨了多少，只看上涨和下跌的真实家数。数据来自腾讯行情，自动比较三个市场的赚钱效应。</p>
         <div class="formula"><span>市场温度</span><b>=</b><span class="fraction"><span>上涨家数 − 下跌家数</span><i></i><span>下跌家数</span></span></div>
       </div>
       <aside class="overview" id="overview">
         <div class="overview-head"><span>三市场综合</span><i>等权平均</i></div>
         <div class="overview-value" id="composite">—</div>
-        <div class="overview-level"><strong id="compositeLevel">待输入</strong><span id="compositeNote">等待有效数据</span></div>
+        <div class="overview-level"><strong id="compositeLevel">读取中</strong><span id="compositeNote">正在获取最新数据</span></div>
         <div class="ranking" id="ranking"></div>
       </aside>
     </div>
 
     <section>
       <div class="section-head">
-        <div class="section-title"><span class="index">01</span><div><h2>三大市场温度计</h2><p>修改家数后自动重新计算</p></div></div>
-        <div class="actions"><button class="reset" id="reset">恢复默认</button><button class="example" id="example">载入对比示例</button></div>
+        <div class="section-title"><span class="index">01</span><div><h2>三大市场温度计</h2><p>腾讯行情统计，每 5 分钟更新</p></div></div>
+        <div class="actions"><button class="example" id="refresh">立即刷新</button></div>
       </div>
       <div class="grid" id="cards"></div>
+      <div class="data-meta" id="dataMeta">正在获取腾讯行情数据…</div>
     </section>
 
     <section>
@@ -87,30 +88,28 @@
         <div class="g3"><b>均衡</b><span>-0.10 ～ +0.10</span></div><div class="g4"><b>回暖</b><span>+0.10 ～ +0.50</span></div>
         <div class="g5"><b>偏热</b><span>+0.50 ～ +1.00</span></div><div class="g6"><b>过热</b><span>≥ +1.00</span></div>
       </div>
-      <div class="note"><b>说明</b><p>本工具衡量的是市场涨跌广度，不代表指数涨跌幅，也不构成交易建议。下跌家数为 0 时不计算。</p></div>
+      <div class="note"><b>说明</b><p>上涨、下跌和平盘按腾讯行情涨跌幅统计；上证指沪市主板，不含科创板。市场温度衡量的是涨跌广度，不代表指数涨跌幅，也不构成交易建议。下跌家数为 0 时不计算。</p></div>
     </section>
   </main>
   <footer><b>MARKET TEMPERATURE</b><span>用涨跌家数看懂真实市场情绪</span></footer>
 
   <script>
-    const defaults=[
-      {key:'shanghai',name:'上证市场',short:'上证',code:'SSE',desc:'沪市主板整体涨跌广度',up:1189,down:915},
-      {key:'star',name:'科创板',short:'科创',code:'STAR',desc:'科创板个股涨跌广度',up:356,down:214},
-      {key:'chinext',name:'创业板',short:'创业',code:'CHINEXT',desc:'创业板个股涨跌广度',up:742,down:611}
+    const fallback=[
+      {key:'shanghai',name:'上证',short:'上证',code:'SSE',desc:'沪市主板（不含科创板）',up:606,down:1024,flat:69,total:1699},
+      {key:'star',name:'科创板',short:'科创',code:'STAR',desc:'科创板个股涨跌广度',up:389,down:214,flat:10,total:613},
+      {key:'chinext',name:'创业板',short:'创业',code:'CHINEXT',desc:'创业板个股涨跌广度',up:753,down:612,flat:37,total:1402}
     ];
-    const examples={shanghai:{up:1456,down:648},star:{up:291,down:279},chinext:{up:519,down:834}};
-    let markets=structuredClone(defaults);
+    let markets=structuredClone(fallback);
     const cards=document.getElementById('cards');
     const temp=(up,down)=>down>0?(up-down)/down:null;
     const clamp=(n,min,max)=>Math.min(Math.max(n,min),max);
     const format=v=>v===null||!Number.isFinite(v)?'—':`${v>0?'+':''}${v.toFixed(2)}`;
-    function state(v){if(v===null)return{label:'待输入',tone:'neutral'};if(v<=-.5)return{label:'冰点',tone:'cold'};if(v<-.1)return{label:'偏冷',tone:'cool'};if(v<=.1)return{label:'均衡',tone:'balanced'};if(v<.5)return{label:'回暖',tone:'warm'};if(v<1)return{label:'偏热',tone:'hot'};return{label:'过热',tone:'overheated'}}
+    function state(v){if(v===null)return{label:'暂无数据',tone:'neutral'};if(v<=-.5)return{label:'冰点',tone:'cold'};if(v<-.1)return{label:'偏冷',tone:'cool'};if(v<=.1)return{label:'均衡',tone:'balanced'};if(v<.5)return{label:'回暖',tone:'warm'};if(v<1)return{label:'偏热',tone:'hot'};return{label:'过热',tone:'overheated'}}
     function renderCards(){
       cards.innerHTML=markets.map(m=>{
-        const v=temp(m.up,m.down),s=state(v),total=m.up+m.down,breadth=total>0?m.up/total*100:0,marker=clamp(((v??-1)+1)/3*100,0,100);
-        return `<article class="card ${s.tone}" data-key="${m.key}"><div class="card-head"><div><div class="code">${m.code}</div><h3>${m.name}</h3><p>${m.desc}</p></div><span class="pill">${s.label}</span></div><div class="reading"><small>市场温度</small><strong>${format(v)}</strong><em>${v===null?'下跌家数不能为 0':`(${m.up} − ${m.down}) ÷ ${m.down} = ${format(v)}`}</em></div><div class="temperature-scale"><i class="needle" style="left:${marker}%"></i></div><div class="breadth"><div class="breadth-label"><span>上涨占比</span><b>${breadth.toFixed(1)}%</b></div><div class="breadth-track"><i style="width:${breadth}%"></i></div></div><div class="inputs"><label><span class="label"><i class="dot up"></i>上涨家数</span><input aria-label="${m.name}上涨家数" type="number" min="0" data-field="up" value="${m.up}"></label><label><span class="label"><i class="dot down"></i>下跌家数</span><input aria-label="${m.name}下跌家数" type="number" min="0" data-field="down" value="${m.down}"></label></div></article>`
+        const v=temp(m.up,m.down),s=state(v),total=m.total||m.up+m.down+(m.flat||0),breadth=total>0?m.up/total*100:0,marker=clamp(((v??-1)+1)/3*100,0,100);
+        return `<article class="card ${s.tone}" data-key="${m.key}"><div class="card-head"><div><div class="code">${m.code}</div><h3>${m.name}</h3><p>${m.desc}</p></div><span class="pill">${s.label}</span></div><div class="reading"><small>市场温度</small><strong>${format(v)}</strong><em>${v===null?'下跌家数不能为 0':`(${m.up} − ${m.down}) ÷ ${m.down} = ${format(v)}`}</em></div><div class="temperature-scale"><i class="needle" style="left:${marker}%"></i></div><div class="breadth"><div class="breadth-label"><span>上涨占全部股票</span><b>${breadth.toFixed(1)}%</b></div><div class="breadth-track"><i style="width:${breadth}%"></i></div></div><div class="stats"><div class="stat"><span><i class="dot up"></i>上涨</span><b>${m.up}</b></div><div class="stat"><span><i class="dot down"></i>下跌</span><b>${m.down}</b></div><div class="stat"><span><i class="dot flat"></i>平盘</span><b>${m.flat||0}</b></div></div></article>`
       }).join('');
-      cards.querySelectorAll('input').forEach(input=>input.addEventListener('input',e=>{const card=e.target.closest('.card'),m=markets.find(x=>x.key===card.dataset.key);m[e.target.dataset.field]=Math.max(0,Number(e.target.value)||0);render()}));
     }
     function renderOverview(){
       const readings=markets.map(m=>({m,v:temp(m.up,m.down)})),valid=readings.map(x=>x.v).filter(v=>v!==null),composite=valid.length?valid.reduce((a,b)=>a+b,0)/valid.length:null,s=state(composite),overview=document.getElementById('overview');
@@ -118,9 +117,31 @@
       readings.sort((a,b)=>(b.v??-Infinity)-(a.v??-Infinity));document.getElementById('ranking').innerHTML=readings.map((x,i)=>`<div class="rank"><span>0${i+1}</span><b>${x.m.short}</b><span class="rank-line"><i style="width:${clamp(((x.v??-1)+1)/3*100,5,100)}%"></i></span><strong>${format(x.v)}</strong></div>`).join('');
     }
     function render(){renderCards();renderOverview()}
-    document.getElementById('reset').addEventListener('click',()=>{markets=structuredClone(defaults);render()});
-    document.getElementById('example').addEventListener('click',()=>{markets=markets.map(m=>({...m,...examples[m.key]}));render()});
-    render();
+    function formatTime(value){
+      if(!value)return'时间未知';
+      const d=new Date(value);
+      return Number.isNaN(d.getTime())?value:new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(d);
+    }
+    async function loadData(){
+      const mode=document.getElementById('mode'),meta=document.getElementById('dataMeta');
+      mode.className='mode loading';mode.textContent='正在读取腾讯行情';
+      try{
+        const response=await fetch(`market-data.json?t=${Date.now()}`,{cache:'no-store'});
+        if(!response.ok)throw new Error(`HTTP ${response.status}`);
+        const data=await response.json();
+        if(!Array.isArray(data.markets)||data.markets.length!==3)throw new Error('数据格式异常');
+        markets=data.markets;render();
+        mode.className='mode';mode.textContent='腾讯行情 · 自动更新';
+        const updated=formatTime(data.market_time||data.generated_at);
+        meta.innerHTML=`行情时间：${updated}（北京时间） · 共统计 ${Number(data.total_records||0).toLocaleString('zh-CN')} 只A股 · <a href="${data.source_url}" target="_blank" rel="noreferrer">数据来源：腾讯财经</a>`;
+      }catch(error){
+        markets=structuredClone(fallback);render();
+        mode.className='mode error';mode.textContent='暂用最近收盘数据';
+        meta.textContent=`腾讯数据暂时读取失败，当前显示最近一次已保存数据。${error.message}`;
+      }
+    }
+    document.getElementById('refresh').addEventListener('click',loadData);
+    render();loadData();setInterval(loadData,60000);
   </script>
 </body>
 </html>
