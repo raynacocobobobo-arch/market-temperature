@@ -1,0 +1,46 @@
+{
+  "source": "腾讯财经",
+  "source_url": "https://stockapp.finance.qq.com/",
+  "generated_at": "2026-08-15T11:24:07.011Z",
+  "market_time": "2026-08-14T16:14:01+08:00",
+  "total_records": 5543,
+  "formula": "(上涨家数-下跌家数)/下跌家数",
+  "markets": [
+    {
+      "key": "shanghai",
+      "name": "上证",
+      "short": "上证",
+      "code": "SSE",
+      "desc": "沪市主板（不含科创板）",
+      "total": 1699,
+      "up": 606,
+      "down": 1024,
+      "flat": 69,
+      "temperature": -0.408203125
+    },
+    {
+      "key": "star",
+      "name": "科创板",
+      "short": "科创",
+      "code": "STAR",
+      "desc": "科创板个股涨跌广度",
+      "total": 613,
+      "up": 389,
+      "down": 214,
+      "flat": 10,
+      "temperature": 0.8177570093457944
+    },
+    {
+      "key": "chinext",
+      "name": "创业板",
+      "short": "创业",
+      "code": "CHINEXT",
+      "desc": "创业板个股涨跌广度",
+      "total": 1402,
+      "up": 753,
+      "down": 612,
+      "flat": 37,
+      "temperature": 0.23039215686274508
+    }
+  ]
+}
