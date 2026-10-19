@@ -1,9 +1,9 @@
 {
   "source": "腾讯财经",
   "source_url": "https://stockapp.finance.qq.com/",
-  "generated_at": "2026-10-16T12:19:25.322Z",
-  "market_time": "2026-10-16T16:15:00+08:00",
-  "total_records": 5577,
+  "generated_at": "2026-10-19T14:36:44.737Z",
+  "market_time": "2026-10-19T16:15:00+08:00",
+  "total_records": 5575,
   "formula": "(上涨家数-下跌家数)/下跌家数",
   "markets": [
     {
@@ -12,11 +12,11 @@
       "short": "上证",
       "code": "SSE",
       "desc": "沪市主板（不含科创板）",
-      "total": 1702,
-      "up": 1075,
-      "down": 579,
-      "flat": 48,
-      "temperature": 0.8566493955094991
+      "total": 1700,
+      "up": 780,
+      "down": 854,
+      "flat": 66,
+      "temperature": -0.08665105386416862
     },
     {
       "key": "star",
@@ -25,10 +25,10 @@
       "code": "STAR",
       "desc": "科创板个股涨跌广度",
       "total": 618,
-      "up": 300,
-      "down": 310,
-      "flat": 8,
-      "temperature": -0.03225806451612903
+      "up": 252,
+      "down": 359,
+      "flat": 7,
+      "temperature": -0.298050139275766
     },
     {
       "key": "chinext",
@@ -37,10 +37,10 @@
       "code": "CHINEXT",
       "desc": "创业板个股涨跌广度",
       "total": 1411,
-      "up": 758,
-      "down": 621,
-      "flat": 32,
-      "temperature": 0.22061191626409019
+      "up": 540,
+      "down": 841,
+      "flat": 30,
+      "temperature": -0.3579072532699168
     }
   ]
 }
